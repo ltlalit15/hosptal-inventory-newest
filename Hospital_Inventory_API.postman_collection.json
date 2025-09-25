@@ -1,0 +1,1036 @@
+{
+  "info": {
+    "name": "Hospital Inventory Management API",
+    "description": "Complete API collection for Hospital Inventory Management System",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "1.0.0"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{auth_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000/api",
+      "type": "string"
+    },
+    {
+      "key": "auth_token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john.doe@hospital.com\",\n  \"password\": \"password123\",\n  \"role\": \"facility_user\",\n  \"facility_id\": 1,\n  \"phone\": \"+1-555-0123\",\n  \"department\": \"Cardiology\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/register",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('auth_token', response.data.token);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@hospital.com\",\n  \"password\": \"admin123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/auth/profile",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "profile"]
+            }
+          }
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe Updated\",\n  \"phone\": \"+1-555-0124\",\n  \"department\": \"Emergency\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/profile",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "profile"]
+            }
+          }
+        },
+        {
+          "name": "Change Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"currentPassword\": \"admin123\",\n  \"newPassword\": \"newpassword123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/change-password",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "change-password"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/users?page=1&limit=10&role=facility_user&status=active",
+              "host": ["{{base_url}}"],
+              "path": ["users"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "role",
+                  "value": "facility_user"
+                },
+                {
+                  "key": "status",
+                  "value": "active"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get User by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/users/1",
+              "host": ["{{base_url}}"],
+              "path": ["users", "1"]
+            }
+          }
+        },
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Jane Smith\",\n  \"email\": \"jane.smith@hospital.com\",\n  \"password\": \"password123\",\n  \"role\": \"facility_user\",\n  \"facility_id\": 1,\n  \"phone\": \"+1-555-0125\",\n  \"department\": \"Nursing\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/users",
+              "host": ["{{base_url}}"],
+              "path": ["users"]
+            }
+          }
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Jane Smith Updated\",\n  \"phone\": \"+1-555-0126\",\n  \"department\": \"ICU\",\n  \"status\": \"active\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/users/2",
+              "host": ["{{base_url}}"],
+              "path": ["users", "2"]
+            }
+          }
+        },
+        {
+          "name": "Delete User",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/users/2",
+              "host": ["{{base_url}}"],
+              "path": ["users", "2"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Facilities",
+      "item": [
+        {
+          "name": "Get All Facilities",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/facilities?page=1&limit=10&status=active",
+              "host": ["{{base_url}}"],
+              "path": ["facilities"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "status",
+                  "value": "active"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Facility by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/facilities/1",
+              "host": ["{{base_url}}"],
+              "path": ["facilities", "1"]
+            }
+          }
+        },
+        {
+          "name": "Create Facility",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"West Wing Hospital\",\n  \"location\": \"West District\",\n  \"type\": \"Hospital\",\n  \"contact_person\": \"Dr. Robert Johnson\",\n  \"phone\": \"+1-555-0200\",\n  \"email\": \"admin@westwing.com\",\n  \"address\": \"123 West Street, Medical District\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/facilities",
+              "host": ["{{base_url}}"],
+              "path": ["facilities"]
+            }
+          }
+        },
+        {
+          "name": "Update Facility",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"West Wing Medical Center\",\n  \"location\": \"West District Updated\",\n  \"type\": \"Medical Center\",\n  \"contact_person\": \"Dr. Robert Johnson\",\n  \"phone\": \"+1-555-0201\",\n  \"email\": \"admin@westwing.com\",\n  \"address\": \"123 West Street, Medical District\",\n  \"status\": \"active\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/facilities/1",
+              "host": ["{{base_url}}"],
+              "path": ["facilities", "1"]
+            }
+          }
+        },
+        {
+          "name": "Get Facility Stats",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/facilities/1/stats",
+              "host": ["{{base_url}}"],
+              "path": ["facilities", "1", "stats"]
+            }
+          }
+        },
+        {
+          "name": "Delete Facility",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/facilities/1",
+              "host": ["{{base_url}}"],
+              "path": ["facilities", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Inventory",
+      "item": [
+        {
+          "name": "Get All Inventory",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/inventory?page=1&limit=10&category=Medicines&low_stock=false",
+              "host": ["{{base_url}}"],
+              "path": ["inventory"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "category",
+                  "value": "Medicines"
+                },
+                {
+                  "key": "low_stock",
+                  "value": "false"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Inventory by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/inventory/1",
+              "host": ["{{base_url}}"],
+              "path": ["inventory", "1"]
+            }
+          }
+        },
+        {
+          "name": "Create Inventory Item",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"item_code\": \"MED003\",\n  \"item_name\": \"Ibuprofen 400mg\",\n  \"category\": \"Medicines\",\n  \"description\": \"Anti-inflammatory medication\",\n  \"unit\": \"Tablets\",\n  \"quantity\": 500,\n  \"reorder_level\": 50,\n  \"facility_id\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/inventory",
+              "host": ["{{base_url}}"],
+              "path": ["inventory"]
+            }
+          }
+        },
+        {
+          "name": "Update Inventory Item",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"item_name\": \"Ibuprofen 400mg Updated\",\n  \"category\": \"Medicines\",\n  \"description\": \"Anti-inflammatory medication - Updated\",\n  \"unit\": \"Tablets\",\n  \"quantity\": 600,\n  \"reorder_level\": 60\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/inventory/1",
+              "host": ["{{base_url}}"],
+              "path": ["inventory", "1"]
+            }
+          }
+        },
+        {
+          "name": "Update Stock",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quantity\": 100,\n  \"type\": \"add\",\n  \"remarks\": \"Stock replenishment\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/inventory/1/stock",
+              "host": ["{{base_url}}"],
+              "path": ["inventory", "1", "stock"]
+            }
+          }
+        },
+        {
+          "name": "Get Stock Movements",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/inventory/1/movements?page=1&limit=10",
+              "host": ["{{base_url}}"],
+              "path": ["inventory", "1", "movements"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/inventory/categories",
+              "host": ["{{base_url}}"],
+              "path": ["inventory", "categories"]
+            }
+          }
+        },
+        {
+          "name": "Delete Inventory Item",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/inventory/1",
+              "host": ["{{base_url}}"],
+              "path": ["inventory", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Requisitions",
+      "item": [
+        {
+          "name": "Get All Requisitions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/requisitions?page=1&limit=10&status=pending&priority=normal",
+              "host": ["{{base_url}}"],
+              "path": ["requisitions"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "status",
+                  "value": "pending"
+                },
+                {
+                  "key": "priority",
+                  "value": "normal"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Requisition by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/requisitions/1",
+              "host": ["{{base_url}}"],
+              "path": ["requisitions", "1"]
+            }
+          }
+        },
+        {
+          "name": "Create Requisition",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"items\": [\n    {\n      \"item_id\": 1,\n      \"quantity\": 50,\n      \"priority\": \"normal\"\n    },\n    {\n      \"item_id\": 2,\n      \"quantity\": 25,\n      \"priority\": \"high\"\n    }\n  ],\n  \"remarks\": \"Monthly stock replenishment\",\n  \"facility_id\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/requisitions",
+              "host": ["{{base_url}}"],
+              "path": ["requisitions"]
+            }
+          }
+        },
+        {
+          "name": "Update Requisition",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"processing\",\n  \"remarks\": \"Processing requisition\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/requisitions/1",
+              "host": ["{{base_url}}"],
+              "path": ["requisitions", "1"]
+            }
+          }
+        },
+        {
+          "name": "Approve Requisition",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"items\": [\n    {\n      \"item_id\": 1,\n      \"approved_quantity\": 45\n    },\n    {\n      \"item_id\": 2,\n      \"approved_quantity\": 25\n    }\n  ],\n  \"remarks\": \"Approved with partial quantity for item 1\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/requisitions/1/approve",
+              "host": ["{{base_url}}"],
+              "path": ["requisitions", "1", "approve"]
+            }
+          }
+        },
+        {
+          "name": "Deliver Requisition",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"items\": [\n    {\n      \"item_id\": 1,\n      \"delivered_quantity\": 45\n    },\n    {\n      \"item_id\": 2,\n      \"delivered_quantity\": 25\n    }\n  ],\n  \"remarks\": \"Items delivered successfully\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/requisitions/1/deliver",
+              "host": ["{{base_url}}"],
+              "path": ["requisitions", "1", "deliver"]
+            }
+          }
+        },
+        {
+          "name": "Delete Requisition",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/requisitions/1",
+              "host": ["{{base_url}}"],
+              "path": ["requisitions", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Dispatches",
+      "item": [
+        {
+          "name": "Get All Dispatches",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/dispatches?page=1&limit=10&status=in_transit",
+              "host": ["{{base_url}}"],
+              "path": ["dispatches"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "status",
+                  "value": "in_transit"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Dispatch by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/dispatches/1",
+              "host": ["{{base_url}}"],
+              "path": ["dispatches", "1"]
+            }
+          }
+        },
+        {
+          "name": "Create Dispatch",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"requisition_id\": 1,\n  \"facility_id\": 1,\n  \"tracking_number\": \"TRK001\",\n  \"remarks\": \"Dispatched via courier\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/dispatches",
+              "host": ["{{base_url}}"],
+              "path": ["dispatches"]
+            }
+          }
+        },
+        {
+          "name": "Update Dispatch Status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"delivered\",\n  \"remarks\": \"Delivered successfully\",\n  \"tracking_number\": \"TRK001\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/dispatches/1/status",
+              "host": ["{{base_url}}"],
+              "path": ["dispatches", "1", "status"]
+            }
+          }
+        },
+        {
+          "name": "Confirm Delivery",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"remarks\": \"Items received in good condition\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/dispatches/1/confirm",
+              "host": ["{{base_url}}"],
+              "path": ["dispatches", "1", "confirm"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Assets",
+      "item": [
+        {
+          "name": "Get All Assets",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/assets?page=1&limit=10&type=Medical Equipment&status=active",
+              "host": ["{{base_url}}"],
+              "path": ["assets"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "type",
+                  "value": "Medical Equipment"
+                },
+                {
+                  "key": "status",
+                  "value": "active"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Asset by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/assets/1",
+              "host": ["{{base_url}}"],
+              "path": ["assets", "1"]
+            }
+          }
+        },
+        {
+          "name": "Create Asset",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"MRI Scanner\",\n  \"type\": \"Medical Equipment\",\n  \"serial_number\": \"MRI001\",\n  \"model\": \"MRI-Pro-3000\",\n  \"manufacturer\": \"MedScan Corp\",\n  \"purchase_date\": \"2023-01-15\",\n  \"warranty_expiry\": \"2026-01-15\",\n  \"facility_id\": 1,\n  \"department\": \"Radiology\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/assets",
+              "host": ["{{base_url}}"],
+              "path": ["assets"]
+            }
+          }
+        },
+        {
+          "name": "Update Asset",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"MRI Scanner Updated\",\n  \"type\": \"Medical Equipment\",\n  \"serial_number\": \"MRI001\",\n  \"model\": \"MRI-Pro-3000\",\n  \"manufacturer\": \"MedScan Corp\",\n  \"purchase_date\": \"2023-01-15\",\n  \"warranty_expiry\": \"2026-01-15\",\n  \"assigned_to\": 1,\n  \"department\": \"Radiology\",\n  \"status\": \"active\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/assets/1",
+              "host": ["{{base_url}}"],
+              "path": ["assets", "1"]
+            }
+          }
+        },
+        {
+          "name": "Upload Asset Image",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/assets/1/image",
+              "host": ["{{base_url}}"],
+              "path": ["assets", "1", "image"]
+            }
+          }
+        },
+        {
+          "name": "Delete Asset",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/assets/1",
+              "host": ["{{base_url}}"],
+              "path": ["assets", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reports",
+      "item": [
+        {
+          "name": "Stock Report",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/reports/stock?facility_id=1&category=Medicines&date_from=2024-01-01&date_to=2024-12-31",
+              "host": ["{{base_url}}"],
+              "path": ["reports", "stock"],
+              "query": [
+                {
+                  "key": "facility_id",
+                  "value": "1"
+                },
+                {
+                  "key": "category",
+                  "value": "Medicines"
+                },
+                {
+                  "key": "date_from",
+                  "value": "2024-01-01"
+                },
+                {
+                  "key": "date_to",
+                  "value": "2024-12-31"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Requisition Report",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/reports/requisitions?facility_id=1&status=delivered&date_from=2024-01-01&date_to=2024-12-31",
+              "host": ["{{base_url}}"],
+              "path": ["reports", "requisitions"],
+              "query": [
+                {
+                  "key": "facility_id",
+                  "value": "1"
+                },
+                {
+                  "key": "status",
+                  "value": "delivered"
+                },
+                {
+                  "key": "date_from",
+                  "value": "2024-01-01"
+                },
+                {
+                  "key": "date_to",
+                  "value": "2024-12-31"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Facility Usage Report",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/reports/facility-usage?facility_id=1&date_from=2024-01-01&date_to=2024-12-31",
+              "host": ["{{base_url}}"],
+              "path": ["reports", "facility-usage"],
+              "query": [
+                {
+                  "key": "facility_id",
+                  "value": "1"
+                },
+                {
+                  "key": "date_from",
+                  "value": "2024-01-01"
+                },
+                {
+                  "key": "date_to",
+                  "value": "2024-12-31"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Asset Report",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/reports/assets?facility_id=1&type=Medical Equipment&status=active",
+              "host": ["{{base_url}}"],
+              "path": ["reports", "assets"],
+              "query": [
+                {
+                  "key": "facility_id",
+                  "value": "1"
+                },
+                {
+                  "key": "type",
+                  "value": "Medical Equipment"
+                },
+                {
+                  "key": "status",
+                  "value": "active"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Export Report",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/reports/export/stock?format=csv",
+              "host": ["{{base_url}}"],
+              "path": ["reports", "export", "stock"],
+              "query": [
+                {
+                  "key": "format",
+                  "value": "csv"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Dashboard",
+      "item": [
+        {
+          "name": "Get Dashboard Data",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/dashboard",
+              "host": ["{{base_url}}"],
+              "path": ["dashboard"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
